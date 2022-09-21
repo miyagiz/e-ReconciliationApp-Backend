@@ -57,5 +57,7 @@ namespace Reconciliation.Business.Constans
         public static string DeletedUserOperationClaim = "Kullanıcıya Yetki Kaydı Başarıyla Silindi.";
         public static string UpdatedUserOperationClaim = "Kullanıcıya Yetki Kaydı Başarıyla Güncellendi.";
 
+        public static string UpdatedTermsAndCondition = "Sözleşme Başarıyla Güncellendi.";
+
     }
 }

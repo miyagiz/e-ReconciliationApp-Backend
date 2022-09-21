@@ -79,7 +79,7 @@ namespace Reconciliation.API.Controllers
 
                 if (result.Success)
                 {
-                    return Ok(result.Data);
+                    return Ok(result);
                 }
                 return BadRequest(result.Message);
             }

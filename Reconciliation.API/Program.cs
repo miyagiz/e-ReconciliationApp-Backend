@@ -25,8 +25,15 @@ builder.Services.AddControllers();
 builder.Services.AddCors(options =>
 {
     options.AddPolicy("AllowOrigin",
-    builder => builder.WithOrigins("https://localhost:7042/"));
+        builder => builder.WithOrigins("https://localhost:7042", "http://localhost:4200"));
 });
+
+////Tüm istekleri karþýlamak için
+//builder.Services.AddCors(options =>
+//{
+//    options.AddPolicy("AllowOrigin",
+//        builder => builder.AllowAnyHeader().AllowAnyMethod().AllowAnyOrigin());
+//});
 
 var tokenOptions = configuration.GetSection("TokenOptions").Get<TokenOptions>();
 
@@ -61,7 +68,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.UseCors(builder => builder.WithOrigins("https://localhost:7042/").AllowAnyHeader());
+app.UseCors(builder => builder.WithOrigins("http://localhost:4200/", "http://localhost:4200").AllowAnyHeader());
+//app.UseCors("AllowOrigin");
 
 app.UseHttpsRedirection();
 

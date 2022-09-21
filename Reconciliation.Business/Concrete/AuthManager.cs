@@ -56,7 +56,7 @@ namespace Reconciliation.Business.Concrete
         {
             var claims = _userService.GetClaims(user, companyId);
             var accessToken = _tokenHelper.CreateToken(user, claims, companyId);
-            return new SuccessDataResult<AccessToken>(accessToken);
+            return new SuccessDataResult<AccessToken>(accessToken, Messages.SuccessfulLogin);
         }
 
         public IDataResult<User> GetById(int id)
