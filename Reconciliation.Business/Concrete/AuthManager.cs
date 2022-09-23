@@ -29,8 +29,9 @@ namespace Reconciliation.Business.Concrete
         private readonly IMailTemplateService _mailTemplateService;
         private readonly IUserOperationClaimService _userOperationClaimService;
         private readonly IOperationClaimService _operationClaimService;
+        private readonly IForgotPasswordService _forgotPasswordService;
 
-        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService, IMailTemplateService mailTemplateService, IUserOperationClaimService userOperationClaimService, IOperationClaimService operationClaimService)
+        public AuthManager(IUserService userService, ITokenHelper tokenHelper, ICompanyService companyService, IMailService mailService, IMailParameterService mailParameterService, IMailTemplateService mailTemplateService, IUserOperationClaimService userOperationClaimService, IOperationClaimService operationClaimService, IForgotPasswordService forgotPasswordService)
         {
             _userService = userService;
             _tokenHelper = tokenHelper;
@@ -40,6 +41,7 @@ namespace Reconciliation.Business.Concrete
             _mailTemplateService = mailTemplateService;
             _userOperationClaimService = userOperationClaimService;
             _operationClaimService = operationClaimService;
+            _forgotPasswordService = forgotPasswordService;
         }
 
         public IResult CompanyExists(Company company)
@@ -139,7 +141,7 @@ namespace Reconciliation.Business.Concrete
         {
             string subject = "Kullanıcı Kayıt Onay Maili";
             string body = "Başarıyla Kayıt Oldunuz. Hesap Onayınız İçin Aşağıdaki Linke Tıklayınız...";
-            string link = "https://localhost:7042/api/Auth/ConfirmUser?value=" + user.MailConfirmValue;
+            string link = "http://localhost:4200/registerConfirm/" + user.MailConfirmValue;
             string linkDescription = "Kaydı Onaylamak İçin Tıklayınız";
 
             var mailTemplate = _mailTemplateService.GetByTemplateName(3, "Kayıt");
@@ -191,7 +193,7 @@ namespace Reconciliation.Business.Concrete
         public IResult Update(User user)
         {
             _userService.Update(user);
-            return new SuccessResult(Messages.UserMailConfirmSuccessful);
+            return new SuccessResult(Messages.UpdatedUser);
         }
 
         public IResult UserExist(string email)
@@ -203,7 +205,7 @@ namespace Reconciliation.Business.Concrete
             return new SuccessResult();
         }
 
-        IResult IAuthService.SendConfirmEmail(User user)
+        public IResult SendConfirmEmailAgain(User user)
         {
             if (user.MailConfirm == true)
             {
@@ -232,6 +234,46 @@ namespace Reconciliation.Business.Concrete
         public IDataResult<UserCompany> GetUserCompany(int userId)
         {
             return new SuccessDataResult<UserCompany>(_companyService.GetCompany(userId).Data);
+        }
+
+        public IDataResult<User> GetByMail(string email)
+        {
+            return new SuccessDataResult<User>(_userService.GetByMail(email));
+        }
+
+        public IResult SendForgotPasswordEmail(User user, string value)
+        {
+            string subject = "Şifremi Unuttum";
+            string body = "Endişelenmene gerek yok, Parolanı aşağıdaki bağlantıya tıklayarak sıfırlayabilirsin. Parola sıfırlama isteğinde bulunmadıysan, bu e-postayı silebilir ve müziklerinin tadını çıkarmaya devam edebilirsin!";
+            string link = "http://localhost:4200/forgot-password/" + value;
+            string linkDescription = "Parolayı Sıfırla";
+
+            var mailTemplate = _mailTemplateService.GetByTemplateName(3, "Kayıt");
+            string templateBody = mailTemplate.Data.Value;
+            templateBody = templateBody.Replace("{{title}}", subject);
+            templateBody = templateBody.Replace("{{message}}", body);
+            templateBody = templateBody.Replace("{{link}}", link);
+            templateBody = templateBody.Replace("{{linkDescription}}", linkDescription);
+
+
+            var mailParameter = _mailParameterService.Get(3);
+            SendMailDto sendMailDto = new SendMailDto()
+            {
+                mailParameter = mailParameter.Data,
+                email = user.Email,
+                subject = subject,
+                body = templateBody
+            };
+
+
+            _mailService.SendMail(sendMailDto);
+            return new SuccessResult(Messages.MailSendSuccessful);
+        }
+
+        public IResult ChangePassword(User user)
+        {
+            _userService.Update(user);
+            return new SuccessResult(Messages.ChangedUserPassword);
         }
     }
 }

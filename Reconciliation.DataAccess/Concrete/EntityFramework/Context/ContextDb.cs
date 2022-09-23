@@ -30,5 +30,6 @@ namespace Reconciliation.DataAccess.Concrete.EntityFramework.Context
         public DbSet<UserOperationClaim> UserOperationClaims { get; set; }
         public DbSet<MailTemplate> MailTemplates { get; set; }
         public DbSet<TermsAndCondition> TermsAndConditions { get; set; }
+        public DbSet<ForgotPassword> ForgotPasswords { get; set; }
     }
 }

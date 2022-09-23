@@ -61,6 +61,15 @@ namespace Reconciliation.Business.DependencyResolvers.Autofac
             builder.RegisterType<UserOperationClaimManager>().As<IUserOperationClaimService>();
             builder.RegisterType<EfUserOperationClaimDal>().As<IUserOperationClaimDal>();
 
+            builder.RegisterType<TermsAndConditionManager>().As<ITermsAndConditionService>();
+            builder.RegisterType<EfTermsAndConditionDal>().As<ITermsAndConditionDal>();
+
+
+            builder.RegisterType<ForgotPasswordManager>().As< IForgotPasswordService > ();
+            builder.RegisterType<EfForgotPasswordDal>().As<IForgotPasswordDal>();
+
+
+
             var assembly = System.Reflection.Assembly.GetExecutingAssembly();
 
             builder.RegisterAssemblyTypes(assembly).AsImplementedInterfaces().EnableInterfaceInterceptors(new ProxyGenerationOptions()

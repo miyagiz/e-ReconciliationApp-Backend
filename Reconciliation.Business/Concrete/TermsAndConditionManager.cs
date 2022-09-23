@@ -22,7 +22,7 @@ namespace Reconciliation.Business.Concrete
             _termsAndConditionDal = termsAndConditionDal;
         }
 
-        [SecuredOperation("Admin")]
+        //[SecuredOperation("Admin")]
         public IDataResult<TermsAndCondition> Get()
         {
             return new SuccessDataResult<TermsAndCondition>(_termsAndConditionDal.GetList().FirstOrDefault());
@@ -34,7 +34,7 @@ namespace Reconciliation.Business.Concrete
             var result = _termsAndConditionDal.GetList().FirstOrDefault();
             if (result != null)
             {
-                result.Desription = termsAndCondition.Desription;
+                result.Description = termsAndCondition.Description;
                 _termsAndConditionDal.Update(termsAndCondition);
             }
             else

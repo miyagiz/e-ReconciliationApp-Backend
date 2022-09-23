@@ -20,6 +20,8 @@ namespace Reconciliation.Business.Constans
         public static string UserMailConfirmSuccessful = "Mail Adresiniz Başarıyla Onaylanmıştır.";
         public static string MailAlreadyConfirm = "Mail Onayınız Daha Önce Yapılmıştır.";
         public static string MailConfirmTimeHasNotExpired = "Mail Onayını 5 Dakikada Bir Gönderebilirsiniz.";
+        public static string UpdatedUser = "Kullanıcı Başarıyla Güncellendi.";
+        public static string ChangedUserPassword = "Şifreniz Başarıyla Değiştirilmiştir.";
 
         public static string MailParameterUpdated = "Mail Parametreleri Başarıyla Güncellendi.";
         public static string MailSendSuccessful = "Mail Başarıyla Gönderildi.";

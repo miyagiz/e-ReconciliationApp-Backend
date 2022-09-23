@@ -7,10 +7,16 @@ using System.Threading.Tasks;
 
 namespace Reconciliation.Entities.Concrete
 {
-    public class TermsAndCondition:IEntity
+    public class ForgotPassword : IEntity
     {
         public int Id { get; set; }
 
-        public string Description { get; set; }
+        public int UserId { get; set; }
+
+        public string Value { get; set; }
+
+        public DateTime SendDate { get; set; }
+
+        public bool IsActive { get; set; }
     }
 }
